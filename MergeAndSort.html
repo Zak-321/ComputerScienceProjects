@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Merge and Sort</title>
+
+
+<script>
+	function go(){
+		// make and populate array a that will have random length
+		// between 0 and 10 with each array element being a 
+		// random number between 0 and 10
+		var a = new Array()
+		a.length = randomFromInterval(5,10)
+		lowest=0
+		for(i=0;i<a.length;i++){
+			// well done Donovan F
+			a[i]=randomFromInterval(lowest,(i+1)*10)
+			lowest=a[i]
+		}// end of for loop for a
+
+
+		// make and populate array b that will have random length
+		// between 0 and 10 with each array element being a 
+		// random number between 0 and 10
+		var b = new Array()
+		b.length = randomFromInterval(5,10)
+		lowest=0
+		for(i=0;i<b.length;i++){
+			b[i]=randomFromInterval(lowest,(i+1)*10)
+			lowest=b[i]
+		}// end of for loop for a
+
+		// display array a
+		document.getElementById("out").innerHTML+="<br />"
+		document.getElementById("out").innerHTML+="ARRAY A"
+		for(i=0;i<a.length;i++){
+			document.getElementById("out").innerHTML+="<br />"
+			document.getElementById("out").innerHTML+=a[i]	
+		}
+
+
+		// display array b
+		document.getElementById("out").innerHTML+="<br />"
+		document.getElementById("out").innerHTML+="ARRAY B"
+		for(i=0;i<b.length;i++){
+			document.getElementById("out").innerHTML+="<br />"
+			document.getElementById("out").innerHTML+=b[i]	
+		}
+
+		// merge the 2 arrays
+		// declair new needed variables
+		var ai = 0
+		var bi = 0
+		var ci = 0 
+		var c = new Array()
+
+		c.length = a.length + b.length
+
+		// while both arrays have elements put the current lowest into c
+		while(ai < a.length && bi < b.length){
+			if(a[ai] < b[bi]) {
+		   		//element in array a is smallest
+				//put element in array a into array c
+				c[ci] = a[ai]
+				ci++
+				ai++
+			} else {
+			   //element in array b is smallest or they are the same
+				//put element in array a into array c
+				c[ci] = b[bi]
+				ci++
+				bi++
+	   		}
+		}// end of both arrays having elements
+
+		//put leftover elements from a into c
+		while(ai < a.length){
+			c[ci] = a[ai]
+			ci++
+			ai++
+		}// end of a leftovers
+
+		// put leftover elements from b into c
+		while(bi < b.length){
+			c[ci] = b[bi]
+			ci++
+			bi++
+		}// end of b leftovers
+
+
+
+		// display array c
+		document.getElementById("out").innerHTML+="<br />"
+		document.getElementById("out").innerHTML+="ARRAY C"
+		for(i=0;i<c.length;i++){
+		document.getElementById("out").innerHTML+="<br />"
+		document.getElementById("out").innerHTML+=c[i]	
+		}
+
+		
+}
+    
+function randomFromInterval(from,to)
+{
+	return Math.floor(Math.random()*(to-from+1)+from);
+}
+</script>
+</head>
+
+<body onload="go()">
+<div id="out">Content for  id "out" Goes Here</div>
+</body>
+</html>
