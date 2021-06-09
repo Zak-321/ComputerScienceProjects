@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Magic Square</title>
+<script type="text/javascript">
+	function MagicSquare(width){//start of MagicSquare
+		/*This function takes all the values from a square table and puts them into a two dimensional array.  It then displays weather the table is a magic square
+			INPUTS
+				width - the number of rows and columns the table has (both rows and columns are equal)
+			OUTPUTS 
+				none		
+		*/
+		var nums = new Array()
+		var i
+		var x
+		var y
+		var cellID
+		
+		// create a two dimensional array and store the values of all cells in the array
+		nums.length = width
+		for (i = 0; i < nums.length; i++) {
+			nums[i] = new Array()
+			nums[i].length = width
+		}
+		
+		//get info off the screen and put into the array
+		for (x = 0; x < nums.length; x++) {
+			for (y = 0; y < nums[0].length; y++) {
+				cellID = (y + 1) + "_" + (x + 1)
+				nums[x][y] = document.getElementById(cellID).value * 1
+				//alert(nums[x][y])
+			}
+		}
+		
+		// display the results of whether it is a magic square or not
+		if (checkMagic(nums) == true) {
+			alert ("It is a magic square")
+		} else {
+			alert ("It is not a magic square")
+		}
+		
+		
+	}//end of MagicSquare
+	
+	
+	
+	function checkMagic(values){
+		/*This function takes in a two dimensional array and returns true if the array makes a magic square and false if it does not
+			INPUTS
+				values - a two dimensional array with numeric values
+			OUTPUTS 
+				a boolean value representing if it is a magic square (true) or not (false)		
+		*/
+		
+		var magicNumber=0
+		var sum=0
+		var sum2 = 0
+		var i
+		var x
+		var y
+		// set magic number
+		for (x = 0; x < values.length; x++) {
+			magicNumber += values[x][0]
+		}
+		
+		
+		// check the rows
+		for (y = 0; y < values[0].length; y++) {
+			sum = 0
+			for (x = 0; x < values.length; x++) {
+				sum += values[x][y]
+			}//end of x loop
+			if (sum != magicNumber) {
+				//not a magic square
+				return false
+			}
+		}//end of y loop
+		
+		
+		
+		// check columns
+		for (x = 0; x < values.length; x++) {
+			sum = 0
+			for (y = 0; y < values[0].length; y++) {
+				sum += values[x][y]
+			}//end of y loop
+			if (sum != magicNumber) {
+				//not a magic square
+				return false
+			}
+		}//end of x loop
+		
+		
+		
+		// check diagnol
+		//hint 1 - ONLY 1 loop
+		//hint 2 - write down indexes you want to sum
+		//hint 3 - do each diagonal seperately
+		
+		//diagonals
+		sum = 0
+		sum2 = 0
+		y = values.length
+		for (x = 0; x < values.length; x ++) {
+			y--
+			sum += values[x][x]
+			sum2 += values[x][y]
+		}//end of for
+		if (sum != magicNumber || sum2 != magicNumber) {
+			//not a magic square
+			return false
+		}//end of if
+		
+		return true
+	}	
+	
+	function MakeTable(size){//start MakeTable
+		/*This function makes an html table with input boxes for you to enter your numbers into to create a magic square.  It must have the same number of rows and columns.
+		
+		NOTE!!! you will need to delete the existing table before you can check your new table
+			INPUTS
+				size - the number of rows and columns the table has (both rows and columns are equal)
+			OUTPUTS 
+				none		
+		*/
+		var htm
+		var row
+		var col
+		size = size*1
+		htm = '<table border="1" >'
+		for(row = 0; row < size; row++) {
+			htm += "<tr>"
+			for (col = 0; col < size; col++) {
+				htm += '<td><input type="text" id="'+(row+1)+'_'+(col+1)+'"/></td>'
+			}//end of for
+			htm += '</tr>'
+		}//end of for
+		htm += "</table>"
+		
+		
+		
+		document.getElementById("square").innerHTML = htm
+	}//end MakeTable
+	
+</script>
+
+</head>
+
+<body>
+<p>Magic Number</p>
+<p>
+  <label>Size of Magic Square
+    <input type="text" name="size" id="size" />
+  </label>
+  <button onclick="MakeTable(document.getElementById('size').value)" id="build">build</button>
+</p>
+<p>&nbsp;</p>
+<div id="square">Content for  id "square" Goes Here</div>
+<p>&nbsp; </p>
+<p>&nbsp;</p>
+<p>
+  <button onclick="MagicSquare(document.getElementById('size').value * 1)" id="Check">Check</button>
+</p>
+<p>&nbsp; </p>
+</body>
+</html>
