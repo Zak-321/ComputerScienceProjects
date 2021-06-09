@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Hangman</title>
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/my.js"></script>
+
+
+<script type="text/javascript">
+
+//this array contains a list of possible answers
+var words = new Array()
+
+//add elements to words
+words[0] = "baseball"
+words[1] = "corruption"
+words[2] = "illuminated"
+words[3] = "pandemic"
+words[4] = "goodnight"
+words[5] = "explosion"
+words[6] = "school"
+words[7] = "computer"
+words[8] = "elephant"
+words[9] = "nightmare"
+words[10] = "monarch"
+words[11] = "hangman"
+words[12] = "pirate"
+words[13] = "arachnophobia"
+words[14] = "kamikaze"
+words[15] = "extraterrestrial"
+words[16] = "photosynthesis"
+words[17] = "dragon"
+words[18] = "university"
+words[19] = "calculations"
+words[20] = "chemistry"
+words[21] = "utopia"
+words[22] = "rectangular"
+words[23] = "honorable"
+words[24] = "victory"
+words[25] = "failure"
+words[26] = "evicted"
+words[27] = "revolution"
+words[28] = "rebellion"
+words[29] = "empire"
+
+//this array contains every possible letter the player can select
+var alphabet = new Array()
+
+alphabet[0] = "a"
+alphabet[1] = "b"
+alphabet[2] = "c"
+alphabet[3] = "d"
+alphabet[4] = "e"
+alphabet[5] = "f"
+alphabet[6] = "g"
+alphabet[7] = "h"
+alphabet[8] = "i"
+alphabet[9] = "j"
+alphabet[10] = "k"
+alphabet[11] = "l"
+alphabet[12] = "m"
+alphabet[13] = "n"
+alphabet[14] = "o"
+alphabet[15] = "p"
+alphabet[16] = "q"
+alphabet[17] = "r"
+alphabet[18] = "s"
+alphabet[19] = "t"
+alphabet[20] = "u"
+alphabet[21] = "v"
+alphabet[22] = "w"
+alphabet[23] = "x"
+alphabet[24] = "y"
+alphabet[25] = "z"
+	
+//this variable records the number of incorrect guesses
+var wrongGuesses = 0
+	
+//this variable is the solution to the game
+var answer
+
+//create a new array to display blank spaces
+var blanks = new Array()
+
+function OnLoad(){//start of OnLoad
+	wrongGuesses = 0
+	displayHangman()
+	//assign the solution
+	var solution
+	
+	//randomly choose the solution
+	solution = words[randomFromInterval(0, words.length-1)]
+	
+	//create answer array and blanks array
+	answer = solution.split("")
+	blanks.length = answer.length
+	
+	//put _ in for every element in blanks
+	for (i = 0; i <= (answer.length-1); i++) {
+		blanks[i] = "_"
+	}
+	
+	displayBlanks()
+	
+	//clear the letter from the screen
+	for (i=0; i < alphabet.length; i++) {
+		document.getElementById(i+1).innerHTML = alphabet[i]
+	}//end of for
+	
+}// end of OnLoad
+
+function displayBlanks() {
+	var i
+	document.getElementById("phrase").innerHTML = ""
+	for (var i = 0; i <= (answer.length-1); i++) {
+		document.getElementById("phrase").innerHTML += blanks[i] + " "
+	}
+	
+}//end of display blanks
+	
+function guess(letter) {
+	//clear the letter from the screen
+	for (i=0; i < alphabet.length; i++) {
+		if (alphabet[i] == letter) {
+			document.getElementById(i+1).innerHTML = "_"
+		}//end of if
+	}//end of for
+	//is the guess correct
+	if(searchArr(answer, letter) == true) {
+		//found the letter
+		displayBlanks()
+		//did we win
+		if (searchArr(blanks, "_") == false) {
+			//win
+			alert("You Win")
+			OnLoad()
+		}//end of if
+	} else {
+		//wrong guess
+		wrongGuesses++
+		displayHangman()
+		//did we lose?
+		if (wrongGuesses == 7) {
+			alert("You Lose")
+			OnLoad()
+		}
+	}//end of else
+}//end of guess
+	
+function searchArr(arr, target) {
+	/*
+		INPUTS arr - array to search
+			target- what we are looking for
+		OUTPUTS - true or false (was it found)
+	*/
+	var foundIt = false
+	var i
+	for (i = 0; i < arr.length; i++) {
+		if (arr[i] == target) {
+			foundIt = true
+			blanks[i] = arr[i]
+		}//end of if
+	}//end of for
+	return foundIt
+}//end of searchArr
+	
+function displayHangman() {
+	document.getElementById("image").src = "images/hangman" + wrongGuesses + ".png"
+}//end of displayHangman
+	
+</script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="OnLoad()">
+<div id="wrapper">
+  <p><img src="images/hangman0.png" alt="hangman" name="image" width="300" height="300" id="image" /></p>
+  <div class="ans" id="phrase">answer will be here in div id phrase</div>
+  <div id="alphabet"><a id="1" href="#" onclick="guess('a')">A</a> <a id="2" href="#" onclick="guess('b')">B</a> <a id="3" href="#" onclick="guess('c')">C</a><a href="#" id="4" onclick="guess('d')">D</a><a href="#" id="5" onclick="guess('e')">E</a> <a href="#" id="6" onclick="guess('f')">F</a><a href="#" id="7" onclick="guess('g')">G</a><a href="#" id="8" onclick="guess('h')">H</a><a id="9" href="#" onclick="guess('i')">I</a><a href="#" id="10" onclick="guess('j')">J</a><a href="#" id="11" onclick="guess('k')">K</a><a href="#" id="12" onclick="guess('l')">L</a><a href="#" id="13" onclick="guess('m')">M</a><a href="#" id="14" onclick="guess('n')">N</a> <a href="#" id="15" onclick="guess('o')">O</a><a href="#" id="16" onclick="guess('p')">P</a><a href="#" id="17" onclick="guess('q')">Q</a><a href="#" id="18" onclick="guess('r')">R</a><a href="#" id="19" onclick="guess('s')">S</a><a href="#" id="20" onclick="guess('t')">T</a><a href="#" id="21" onclick="guess('u')">U</a><a href="#" id="22" onclick="guess('v')">V</a><a href="#" id="23" onclick="guess('w')">W</a><a href="#" id="24" onclick="guess('x')">X</a><a href="#" id="25" onclick="guess('y')">Y</a> <a href="#" id="26" onclick="guess('z')">Z</a></div>
+  <p>&nbsp;</p>
+</div>
+</body>
+</html>
